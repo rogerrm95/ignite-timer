@@ -1,13 +1,16 @@
 import { differenceInSeconds } from 'date-fns'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { CyclesContext } from '../../../../contexts/CycleContext'
 import { CountdownContainer, Separator } from './styles'
 
 export function Countdown() {
-  const { activeCycle, activeCycleId, markCurrentCycleAsFinished } =
-    useContext(CyclesContext)
-
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+  const {
+    activeCycle,
+    activeCycleId,
+    amountSecondsPassed,
+    markCurrentCycleAsFinished,
+    setSecondsPassed,
+  } = useContext(CyclesContext)
 
   const totalseconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   const currentSeconds = activeCycle ? totalseconds - amountSecondsPassed : 0
@@ -31,18 +34,24 @@ export function Countdown() {
 
         if (secondsDifference >= totalseconds) {
           markCurrentCycleAsFinished()
-          setAmountSecondsPassed(totalseconds)
+          setSecondsPassed(totalseconds)
 
           clearInterval(interval)
         } else {
-          setAmountSecondsPassed(secondsDifference)
+          setSecondsPassed(secondsDifference)
         }
       }, 1000)
     }
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle, totalseconds, activeCycleId, markCurrentCycleAsFinished])
+  }, [
+    activeCycle,
+    totalseconds,
+    activeCycleId,
+    markCurrentCycleAsFinished,
+    setSecondsPassed,
+  ])
 
   // TIMER na ABA DO NAVEGADOR //
   useEffect(() => {

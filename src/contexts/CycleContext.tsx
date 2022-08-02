@@ -13,7 +13,9 @@ interface CyclesContextType {
   activeCycle: Cycle | undefined
   activeCycleId: string | null
   cycles: Cycle[]
+  amountSecondsPassed: number
   markCurrentCycleAsFinished: () => void
+  setSecondsPassed: (seconds: number) => void
 }
 
 interface CyclesProviderType {
@@ -27,6 +29,8 @@ export default function CyclesProvider({ children }: CyclesProviderType) {
   const [activeCycle, setActiveCycle] = useState<Cycle>({} as Cycle)
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
 
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
   function markCurrentCycleAsFinished() {
     setCycles((state) =>
       state.map((cycle) => {
@@ -39,9 +43,20 @@ export default function CyclesProvider({ children }: CyclesProviderType) {
     )
   }
 
+  function setSecondsPassed(seconds: number) {
+    setAmountSecondsPassed(seconds)
+  }
+
   return (
     <CyclesContext.Provider
-      value={{ activeCycle, activeCycleId, cycles, markCurrentCycleAsFinished }}
+      value={{
+        activeCycle,
+        activeCycleId,
+        amountSecondsPassed,
+        cycles,
+        markCurrentCycleAsFinished,
+        setSecondsPassed,
+      }}
     >
       {children}
     </CyclesContext.Provider>
