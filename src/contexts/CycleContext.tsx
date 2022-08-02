@@ -69,8 +69,6 @@ export default function CyclesContextProvider({
     setCycles((state) => [...state, newCycle])
     setActiveCycleId(id)
     setAmountSecondsPassed(0)
-
-    // reset()
   }
 
   // Responsável por interromper um ciclo ativo //
